@@ -14,7 +14,11 @@
 class Task < ActiveRecord::Base
   belongs_to :project
 
-  enum state: %i{todo in-progress done}
+  enum state: {
+    todo:          0,
+    "in-progress": 10,
+    done:          20
+  }
 
   validates :project, presence: true
 end

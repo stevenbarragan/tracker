@@ -3,6 +3,6 @@ FactoryGirl.define do
     project
     name "MyString"
     description "MyText"
-    state 1
+    state 0
   end
 end
