@@ -21,4 +21,5 @@ class Task < ActiveRecord::Base
   }
 
   validates :project, presence: true
+  validates :name, presence: true
 end
