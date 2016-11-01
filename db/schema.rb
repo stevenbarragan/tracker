@@ -30,10 +30,10 @@ ActiveRecord::Schema.define(version: 20161031001731) do
   create_table "tasks", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
     t.string   "name"
     t.text     "description"
-    t.integer  "state"
+    t.integer  "state",       default: 0
     t.uuid     "project_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
   end
 
 end
