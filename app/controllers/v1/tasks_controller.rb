@@ -1,5 +1,9 @@
 module V1
   class TasksController < ApplicationController
+    before_action :set_current_task, only: [:show, :update, :destroy]
+
+    attr_reader :task
+
     swagger_controller :tasks, 'tasks'
 
     swagger_api :index do
@@ -25,12 +29,10 @@ module V1
       param :path, :id, :string, :required, 'Task Id'
     end
     def show
-      task = project.tasks.find_by id: params[:id]
-
       if task.present?
         render json: serializer.new(task)
       else
-        render json: { errors: ['task not found'] }, status: 404
+        render json: { errors: ["task not found"] }, status: 404
       end
     end
 
@@ -59,8 +61,6 @@ module V1
       param :form, :state, :string, :optional, 'Task state: todo, in-progress or done'
     end
     def update
-      task = project.tasks.find_by id: params[:id]
-
       if task.present? && task.update_attributes(task_params)
         render json: serializer.new(task)
       elsif task.present?
@@ -76,14 +76,12 @@ module V1
       param :path, :id, :string, :required, 'task Id'
     end
     def destroy
-      task = project.tasks.find_by id: params[:id]
-
       if task.present? && task.update_attributes(state: :done)
         render json: serializer.new(task)
       elsif task.present?
         render json: { errors: task.errors.full_messages }, status: 400
       else
-        render json: { errors: ['task not found'] }, status: 404
+        render json: { errors: ["task not found"] }, status: 404
       end
     end
 
@@ -109,6 +107,10 @@ module V1
 
     def serializer
       V1::TaskSerializer
+    end
+
+    def set_current_task
+      @task = project.tasks.find_by(id: params[:id])
     end
   end
 end
